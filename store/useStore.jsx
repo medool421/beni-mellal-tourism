@@ -20,26 +20,22 @@ const storage = new MMKV(); // initialize MMKV storage
     } catch (error) {
       set({error: 'Failed to fetch attractions', loading: false}); // set error message and loading to false
     }
+  },
  
-    //toggle favorite action add /remove
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- }), )
+    //toggle favorite action add /remove = favorite / unfavorite
+   toggleFavorite: (id) => {
+      const {favorites}=get(); //get current favorites from store
+      const isFavorite = favorites.includes(id); // check if the id is already in favorites
+      const newFavorites = isFavorite
+      ? favorites.filter((favId) => favId !== id) // if it is favorite remove it
+      : [...favorites, id]; // if not add it
+      storage.set('favorites', JSON.stringify(newFavorites)); // update MMKV storage
+      set({favorites: newFavorites}); // update zustand store
+    },
+      //check if place is favorited
+  isFavorite: (id) => {
+      return get().favorites.includes(id); // return true if id is in favorites else false
+},
+}));  
+     
 
