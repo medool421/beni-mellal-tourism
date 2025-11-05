@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { useStore } from '../store/useStore';
+import React from "react";
+import { useEffect } from "react";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import  useStore from "../store/useStore";
 
 export default function Home() {
   const { attractions, loading, error, fetchAttractions } = useStore();
@@ -26,13 +27,16 @@ export default function Home() {
     );
   }
 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Total: {attractions.length} attractions</Text>
-      {attractions.slice(0, 5).map(item => (
-        <Text key={item.id} style={styles.name}>• {item.name}</Text>
+      <Text style={styles.title}>Total: {attractions?.length} attractions</Text>
+      {attractions?.slice(0, 5).map((item) => (
+        <Text key={item.id} style={styles.name}>
+          • {item.name}
+        </Text>
       ))}
-      <Text style={styles.success}>✅ Store is working!</Text>
+      <Text style={styles.success}> Store is working!</Text>
     </View>
   );
 }
@@ -42,16 +46,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingTop: 50,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   center: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   name: {
@@ -59,13 +63,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   error: {
-    color: 'red',
+    color: "red",
     fontSize: 16,
   },
   success: {
     marginTop: 20,
     fontSize: 18,
-    color: 'green',
-    fontWeight: 'bold',
+    color: "green",
+    fontWeight: "bold",
   },
 });
