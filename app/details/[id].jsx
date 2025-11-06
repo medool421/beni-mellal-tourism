@@ -51,7 +51,7 @@ export default function Details() {
 
   return (
         <View style={styles.container}>
-
+          
           <View style={styles.imageContainer}>
             <Image
               source={{ uri: attraction.thumbnail }}
@@ -92,7 +92,12 @@ export default function Details() {
   onRequestClose={() => setShowMap(false)}
 >
   <View style={styles.mapContainer}>
-    
+    <Pressable 
+      style={styles.closeButton}
+      onPress={() => setShowMap(false)}
+    >
+      <Text style={styles.closeButtonText}> Close</Text>
+    </Pressable>
 
     <MapView
       style={styles.map}
