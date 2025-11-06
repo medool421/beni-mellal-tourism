@@ -64,7 +64,7 @@ export default function Details() {
     <View style={styles.container}>
       {/* Back button - floats on top left */}
       <Pressable style={styles.backButton} onPress={() => router.back()}>
-        <Text style={styles.backButtonText}>← Back</Text>
+        <Text style={styles.backButtonText}>Back</Text>
       </Pressable>
 
       {/* Image container with hero image and info card */}
@@ -107,6 +107,13 @@ export default function Details() {
             <Text style={styles.readMore}>
               {showFullDescription ? "Read less" : "Read more"}
             </Text>
+          </Pressable>
+          {/* ADD GALLERY BUTTON HERE */}
+          <Pressable
+            style={styles.galleryBtn}
+            onPress={() => router.push(`/gallery/${attraction.id}`)}
+          >
+            <Text style={styles.galleryBtnText}> Gallery</Text>
           </Pressable>
         </ScrollView>
       </View>
@@ -212,7 +219,7 @@ const styles = StyleSheet.create({
 
   location: {
     fontSize: 13,
-    color: "#007AFF",
+    color: "#669b57ff",
     marginBottom: 12,
   },
 
@@ -280,5 +287,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#000",
+  },
+  galleryBtn:{
+     backgroundColor: "#669b57ff",
+     padding: 10,
+     borderRadius: 8,
+    marginTop: 10,
+     alignItems: "center",
+
+  },
+  galleryBtnText:{
+     color: "#fff",
+     fontSize: 14,
+     fontWeight: "bold",
   },
 });
