@@ -106,7 +106,14 @@ export default function Details() {
         longitudeDelta: 0.05,
       }}
     >
-      
+      <Marker
+        coordinate={{
+          latitude: parseFloat(attraction.coordination.latitude),
+          longitude: parseFloat(attraction.coordination.longitude),
+        }}
+        title={attraction.name}
+        description="Tap to see more"
+      />
     </MapView>
   </View>
 </Modal>
