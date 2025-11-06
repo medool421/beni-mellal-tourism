@@ -8,9 +8,13 @@ import {
   ActivityIndicator,
   ScrollView,
   Dimensions,
+  Modal,
 } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import useStore from "../../store/useStore";
+import MapView, {Marker} from "react-native-maps";
+import {PROVIDER_GOOGLE} from "react-native-maps";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -18,6 +22,7 @@ export default function Details() {
   const { id } = useLocalSearchParams();
   const { attractions, loading, fetchAttractions } = useStore();
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showMap , setShowMap ] = useState(false);
 
   useEffect(() => {
     if (!attractions || attractions.length === 0) {
@@ -45,45 +50,69 @@ export default function Details() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: attraction.thumbnail }}
-          style={styles.heroImage}
-        />
+        <View style={styles.container}>
 
-        <ScrollView
-          style={styles.infoCard}
-          contentContainerStyle={styles.infoCardContent}
-          showsVerticalScrollIndicator={false}
-        >
-          <Text style={styles.title}>{attraction.name}</Text>
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: attraction.thumbnail }}
+              style={styles.heroImage}
+            />
 
-          <Text style={styles.rating}>⭐⭐⭐⭐⭐</Text>
+            <ScrollView
+              style={styles.infoCard}
+              contentContainerStyle={styles.infoCardContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.title}>{attraction.name}</Text>
 
-          <Text style={styles.location}>
-            📍 {attraction.coordination?.latitude},{" "}
-            {attraction.coordination?.longitude}
-          </Text>
+              <Text style={styles.rating}>⭐⭐⭐⭐⭐</Text>
 
-          <Text
-            style={styles.description}
-            numberOfLines={showFullDescription ? undefined : 3}
-          >
-            {attraction.description}
-          </Text>
-          <Pressable
-            onPress={() => setShowFullDescription(!showFullDescription)}
-          >
-            <Text style={styles.readMore}>
-              {showFullDescription ? "Read less" : "Read more"}
-            </Text>
-          </Pressable>
-        </ScrollView>
-      </View>
-    </View>
-  );
-}
+            <Pressable onPress={() => setShowMap (true)}>
+              <Text style={styles.location}>📍 View on Map</Text>
+            </Pressable> 
+              <Text
+                style={styles.description}
+                numberOfLines={showFullDescription ? undefined : 3}
+              >
+                {attraction.description}
+              </Text>
+              <Pressable
+                onPress={() => setShowFullDescription(!showFullDescription)}
+              >
+                <Text style={styles.readMore}>
+                  {showFullDescription ? "Read less" : "Read more"}
+                </Text>
+              </Pressable>
+            </ScrollView>
+          </View>
+       <Modal
+        visible={showMap}
+  animationType="slide"
+  transparent={false}
+  onRequestClose={() => setShowMap(false)}
+>
+  <View style={styles.mapContainer}>
+    
+
+    <MapView
+      style={styles.map}
+      provider={PROVIDER_GOOGLE}
+      showsUserLocation={true}
+      showsMyLocationButton={true}
+      initialRegion={{
+        latitude: parseFloat(attraction.coordination.latitude),
+        longitude: parseFloat(attraction.coordination.longitude),
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      }}
+    >
+      
+    </MapView>
+  </View>
+</Modal>
+
+        </View>  
+  );} 
 
 const styles = StyleSheet.create({
   container: {
@@ -119,6 +148,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 8,
+     opacity: 0.8, // 50% transparent
   },
   infoCardContent: {
     padding: 16,
@@ -148,5 +178,34 @@ const styles = StyleSheet.create({
     color: "#555",
     fontWeight: "600",
     marginTop: 8,
+  },
+  mapContainer:{
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  map:{
+    flex : 1,
+    width: "100%",
+    height: "100%",
+  },
+  closeButton:{
+    position: "absolute",
+    top:50,
+    right:20,
+    backgroundColor: "#fff",
+    padding:12,
+    borderRadius :25,
+    zIndex: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+
+  },
+  closeButtonText:{
+    fontSize:16,
+    fontWeight: "bold",
+    color: "#000",
   },
 });
