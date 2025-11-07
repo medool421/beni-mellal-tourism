@@ -25,7 +25,14 @@ const CARD_WIDTH = width * 0.9;
 const CARD_HEIGHT = height * 0.65;
 
 // Card Component with stack animation
-function GalleryCard({ image, index, currentIndex, totalImages, onSwipeLeft, onSwipeRight }) {
+function GalleryCard({
+  image,
+  index,
+  currentIndex,
+  totalImages,
+  onSwipeLeft,
+  onSwipeRight,
+}) {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -46,19 +53,22 @@ function GalleryCard({ image, index, currentIndex, totalImages, onSwipeLeft, onS
       const swipeThreshold = width * 0.3;
 
       // Swipe LEFT = Next image
-      if (event.translationX < -swipeThreshold && currentIndex < totalImages - 1) {
+      if (
+        event.translationX < -swipeThreshold &&
+        currentIndex < totalImages - 1
+      ) {
         translateX.value = withTiming(-width * 1.5, { duration: 300 }, () => {
           runOnJS(onSwipeLeft)();
         });
         translateY.value = withTiming(event.translationY, { duration: 300 });
-      } 
+      }
       // Swipe RIGHT = Previous image
       else if (event.translationX > swipeThreshold && currentIndex > 0) {
         translateX.value = withTiming(width * 1.5, { duration: 300 }, () => {
           runOnJS(onSwipeRight)();
         });
         translateY.value = withTiming(event.translationY, { duration: 300 });
-      } 
+      }
       // Snap back if not far enough
       else {
         translateX.value = withSpring(0);
@@ -140,14 +150,14 @@ function GalleryCard({ image, index, currentIndex, totalImages, onSwipeLeft, onS
     <GestureDetector gesture={panGesture}>
       <Animated.View style={[styles.card, animatedStyle]}>
         <Image source={{ uri: image }} style={styles.cardImage} />
-        
+
         {/* Show labels only on top card */}
         {index === currentIndex && (
           <>
             <Animated.View style={[styles.nextLabel, nextLabelStyle]}>
               <Text style={styles.labelText}>NEXT →</Text>
             </Animated.View>
-            
+
             <Animated.View style={[styles.prevLabel, prevLabelStyle]}>
               <Text style={styles.labelText}>← PREV</Text>
             </Animated.View>
@@ -209,7 +219,7 @@ export default function Gallery() {
         <Pressable style={styles.closeButton} onPress={() => router.back()}>
           <Text style={styles.closeButtonText}>✕</Text>
         </Pressable>
-        
+
         <View style={styles.counterContainer}>
           <Text style={styles.counterText}>
             {currentIndex + 1} / {images.length}
@@ -240,10 +250,7 @@ export default function Gallery() {
         {images.map((_, index) => (
           <View
             key={index}
-            style={[
-              styles.dot,
-              currentIndex === index && styles.activeDot,
-            ]}
+            style={[styles.dot, currentIndex === index && styles.activeDot]}
           />
         ))}
       </View>
@@ -251,7 +258,10 @@ export default function Gallery() {
       {/* Bottom Navigation Buttons */}
       <View style={styles.bottomNav}>
         <Pressable
-          style={[styles.navButton, currentIndex === 0 && styles.navButtonDisabled]}
+          style={[
+            styles.navButton,
+            currentIndex === 0 && styles.navButtonDisabled,
+          ]}
           onPress={handlePrevious}
           disabled={currentIndex === 0}
         >
@@ -259,7 +269,10 @@ export default function Gallery() {
         </Pressable>
 
         <Pressable
-          style={[styles.navButton, currentIndex === images.length - 1 && styles.navButtonDisabled]}
+          style={[
+            styles.navButton,
+            currentIndex === images.length - 1 && styles.navButtonDisabled,
+          ]}
           onPress={handleNext}
           disabled={currentIndex === images.length - 1}
         >
