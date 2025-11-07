@@ -35,6 +35,13 @@ export default function Home() {
   return (
    <View style={styles.container}>
   <Text style={styles.title}>Total: {attractions?.length} attractions</Text>
+     {/* ADD THIS TEST BUTTON */}
+    <Pressable 
+      onPress={() => router.push('/test-animations')}
+      style={[styles.button, { backgroundColor: '#FF6B6B', marginBottom: 20 }]}
+    >
+      <Text style={styles.buttonText}>Test Animations</Text>
+    </Pressable>
   
   {attractions?.slice(0, 5).map((item) => (
     <Pressable 
