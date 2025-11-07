@@ -9,6 +9,17 @@ export default function StackLayout() {
           headerShown: false,
         }}
       />
-
+    <Stack.Screen
+        name="city-details"
+        options={{
+          headerShown: false,
+        }}
+        />
+    <Stack.Screen
+        name="activities-list"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>);
 }
