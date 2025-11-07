@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     width: "100%",
-    height: height * 0.9,
+    height: "100%" ,
     position: "relative",
   },
 
@@ -236,13 +236,13 @@ const styles = StyleSheet.create({
   },
 
   infoCard: {
-    position: "absolute",
-    bottom: 20,
-    left: 15,
-    right: 15,
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
-    borderRadius: 16,
-    maxHeight: height * 0.3,
+      position: "absolute",
+    bottom: 20,  
+    left: 10,
+    right: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.81)",
+    borderRadius: 20,   
+    maxHeight: height * 0.4,   // CHANGE FROM 0.3 TO 0.4 (make it bigger)
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
 
   backButton: {
     position: "absolute",
-    top: 20,
+    top: 50,
     left: 20,
     zIndex: 10,
     backgroundColor: "#669b57ff",
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   },
   favoriteButton: {
     position: "absolute",
-    top: 20, // same level as back button
+    top: 50, // same level as back button
     right: 20,
     zIndex: 10,
     backgroundColor: "rgba(0,0,0,0.3)",
