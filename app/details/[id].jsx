@@ -204,6 +204,11 @@ export default function Details() {
               }}
               title={attraction.name}
               description="Tap to see more"
+              onCalloutPress={()=> {
+                setShowMap(false);
+              router.push(`/gallery/${attraction.id}`);
+
+              }}
             />
           </MapView>
         </View>
