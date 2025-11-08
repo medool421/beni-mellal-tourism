@@ -42,7 +42,9 @@ export default function Home() {
     <ImageBackground
         source={require('../assets/source.jpg')} 
         style={styles.headerImage}
-        resizeMode="cover">
+        resizeMode="cover"
+              blurRadius={4}
+>
 
     <Pressable 
         style={styles.backButton}
