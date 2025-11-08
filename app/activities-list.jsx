@@ -77,7 +77,7 @@ export default function ActivitiesList() {
         <View style={styles.card}>
           {/* Card Image */}
           <Image 
-            source={{ uri: item.image }} 
+            source={{ uri: item.images[0] }} 
             style={styles.cardImage}
             resizeMode="cover"
           />
