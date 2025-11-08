@@ -218,6 +218,7 @@ export default function ActivitiesList() {
           showsHorizontalScrollIndicator={false}
           snapToInterval={CARD_WIDTH + SPACING}
           decelerationRate="normal"
+          onScroll={onScroll}
           contentContainerStyle={styles.flatListContent}
         />
 
