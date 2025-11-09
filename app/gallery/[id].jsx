@@ -24,22 +24,13 @@ const { width, height } = Dimensions.get("window");
 const CARD_WIDTH = width * 0.9;
 const CARD_HEIGHT = height * 0.65;
 
-// Card Component with stack animation
-function GalleryCard({
-  image,
-  index,
-  currentIndex,
-  totalImages,
-  onSwipeLeft,
-  onSwipeRight,
-}) {
+function GalleryCard({ image, index, currentIndex, totalImages, onSwipeLeft, onSwipeRight }) {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
 
   const panGesture = Gesture.Pan()
     .onUpdate((event) => {
-      // Only allow dragging the top card
       if (index === currentIndex) {
         translateX.value = event.translationX;
         translateY.value = event.translationY;
@@ -47,30 +38,21 @@ function GalleryCard({
       }
     })
     .onEnd((event) => {
-      // Only respond if it's the current card
       if (index !== currentIndex) return;
 
       const swipeThreshold = width * 0.3;
 
-      // Swipe LEFT = Next image
-      if (
-        event.translationX < -swipeThreshold &&
-        currentIndex < totalImages - 1
-      ) {
+      if (event.translationX < -swipeThreshold && currentIndex < totalImages - 1) {
         translateX.value = withTiming(-width * 1.5, { duration: 300 }, () => {
           runOnJS(onSwipeLeft)();
         });
         translateY.value = withTiming(event.translationY, { duration: 300 });
-      }
-      // Swipe RIGHT = Previous image
-      else if (event.translationX > swipeThreshold && currentIndex > 0) {
+      } else if (event.translationX > swipeThreshold && currentIndex > 0) {
         translateX.value = withTiming(width * 1.5, { duration: 300 }, () => {
           runOnJS(onSwipeRight)();
         });
         translateY.value = withTiming(event.translationY, { duration: 300 });
-      }
-      // Snap back if not far enough
-      else {
+      } else {
         translateX.value = withSpring(0);
         translateY.value = withSpring(0);
         scale.value = withSpring(1);
@@ -92,7 +74,6 @@ function GalleryCard({
       Extrapolation.CLAMP
     );
 
-    // Stack effect
     const indexDiff = index - currentIndex;
     const stackScale = interpolate(
       indexDiff,
@@ -116,11 +97,10 @@ function GalleryCard({
         { scale: scale.value * stackScale },
       ],
       opacity: index === currentIndex ? opacity : 1,
-      zIndex: 100 - index,
+      zIndex: 10 - indexDiff,
     };
   });
 
-  // Labels
   const nextLabelStyle = useAnimatedStyle(() => {
     const opacity = interpolate(
       translateX.value,
@@ -141,7 +121,6 @@ function GalleryCard({
     return { opacity };
   });
 
-  // Only render current card and next few cards
   if (index < currentIndex || index > currentIndex + 3) {
     return null;
   }
@@ -150,14 +129,13 @@ function GalleryCard({
     <GestureDetector gesture={panGesture}>
       <Animated.View style={[styles.card, animatedStyle]}>
         <Image source={{ uri: image }} style={styles.cardImage} />
-
-        {/* Show labels only on top card */}
+        
         {index === currentIndex && (
           <>
             <Animated.View style={[styles.nextLabel, nextLabelStyle]}>
               <Text style={styles.labelText}>NEXT →</Text>
             </Animated.View>
-
+            
             <Animated.View style={[styles.prevLabel, prevLabelStyle]}>
               <Text style={styles.labelText}>← PREV</Text>
             </Animated.View>
@@ -214,23 +192,7 @@ export default function Gallery() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Pressable style={styles.closeButton} onPress={() => router.back()}>
-          <Text style={styles.closeButtonText}>✕</Text>
-        </Pressable>
-
-        <View style={styles.counterContainer}>
-          <Text style={styles.counterText}>
-            {currentIndex + 1} / {images.length}
-          </Text>
-        </View>
-      </View>
-
-      {/* Attraction Name */}
-      <Text style={styles.attractionName}>{attraction.name}</Text>
-
-      {/* Card Stack */}
+      {/* Card Stack Container */}
       <View style={styles.cardContainer}>
         {images.map((image, index) => (
           <GalleryCard
@@ -245,39 +207,52 @@ export default function Gallery() {
         ))}
       </View>
 
-      {/* Navigation Dots */}
-      <View style={styles.dotsContainer}>
-        {images.map((_, index) => (
-          <View
-            key={index}
-            style={[styles.dot, currentIndex === index && styles.activeDot]}
-          />
-        ))}
+      {/* Header - ABOVE cards */}
+      <View style={styles.header}>
+        <Pressable style={styles.closeButton} onPress={() => router.back()}>
+          <Text style={styles.closeButtonText}>✕</Text>
+        </Pressable>
+        
+        <View style={styles.counterContainer}>
+          <Text style={styles.counterText}>
+            {currentIndex + 1} / {images.length}
+          </Text>
+        </View>
       </View>
 
-      {/* Bottom Navigation Buttons */}
-      <View style={styles.bottomNav}>
-        <Pressable
-          style={[
-            styles.navButton,
-            currentIndex === 0 && styles.navButtonDisabled,
-          ]}
-          onPress={handlePrevious}
-          disabled={currentIndex === 0}
-        >
-          <Text style={styles.navButtonText}>Previous</Text>
-        </Pressable>
+      {/* Bottom Section - ABOVE cards */}
+      <View style={styles.bottomSection}>
+        <Text style={styles.attractionName}>{attraction.name}</Text>
 
-        <Pressable
-          style={[
-            styles.navButton,
-            currentIndex === images.length - 1 && styles.navButtonDisabled,
-          ]}
-          onPress={handleNext}
-          disabled={currentIndex === images.length - 1}
-        >
-          <Text style={styles.navButtonText}>Next </Text>
-        </Pressable>
+        <View style={styles.dotsContainer}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.dot,
+                currentIndex === index && styles.activeDot,
+              ]}
+            />
+          ))}
+        </View>
+
+        <View style={styles.bottomNav}>
+          <Pressable
+            style={[styles.navButton, currentIndex === 0 && styles.navButtonDisabled]}
+            onPress={handlePrevious}
+            disabled={currentIndex === 0}
+          >
+            <Text style={styles.navButtonText}>← Previous</Text>
+          </Pressable>
+
+          <Pressable
+            style={[styles.navButton, currentIndex === images.length - 1 && styles.navButtonDisabled]}
+            onPress={handleNext}
+            disabled={currentIndex === images.length - 1}
+          >
+            <Text style={styles.navButtonText}>Next →</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -287,7 +262,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1a1a1a",
-    paddingTop: 50,
   },
   center: {
     flex: 1,
@@ -311,48 +285,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    marginBottom: 10,
-  },
-  closeButton: {
-    backgroundColor: "rgba(255,255,255,0.2)",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  closeButtonText: {
-    color: "#fff",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  counterContainer: {
-    backgroundColor: "rgba(255,255,255,0.2)",
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  counterText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  attractionName: {
-    color: "#fff",
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-  },
   cardContainer: {
-    flex: 1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 1,
   },
   card: {
     position: "absolute",
@@ -397,10 +338,71 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  header: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    zIndex: 1000,
+  },
+  closeButton: {
+    backgroundColor: "#669b57ff",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButtonText: {
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "bold",
+  },
+  counterContainer: {
+    backgroundColor: "#669b57ff",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  counterText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  bottomSection: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    paddingBottom: 30,
+  },
+  attractionName: {
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 15,
+    paddingHorizontal: 20,
+  },
   dotsContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginVertical: 20,
+    marginBottom: 20,
   },
   dot: {
     width: 8,
@@ -417,7 +419,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 30,
-    paddingBottom: 30,
   },
   navButton: {
     backgroundColor: "#669b57ff",
@@ -426,6 +427,11 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     minWidth: 140,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   navButtonDisabled: {
     backgroundColor: "rgba(255,255,255,0.2)",
