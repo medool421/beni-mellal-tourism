@@ -35,10 +35,6 @@ export default function Layout() {
         }}
       />
         <Stack.Screen 
-          name="index" 
-          options={{ title: "Beni Mellal Tourism" }} 
-        />
-        <Stack.Screen 
           name="details/[id]" 
           options={{ 
             title: "Details",
