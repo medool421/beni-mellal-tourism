@@ -60,6 +60,7 @@ This project was built as a tourism app to help visitors discover the hidden gem
 </div>
 
 <div align="center">
+  <img src="./screenshots/details.png" width="180" alt="details" />
   <img src="./screenshots/map.png" width="180" alt="Map" />
   <img src="./screenshots/gallery.png" width="180" alt="Gallery" />
 </div>
@@ -70,7 +71,10 @@ This project was built as a tourism app to help visitors discover the hidden gem
 
 **Attractions List** - Scrollable cards showing all touristic spots
 
+**Details screen** - Details for each attraction with a map button for location
+
 **Map Modal** - Interactive Google Maps with markers
+
 
 **Gallery Screen** - Swipeable photo gallery with animations
 
