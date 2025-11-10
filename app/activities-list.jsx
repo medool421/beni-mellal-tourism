@@ -74,6 +74,13 @@ export default function ActivitiesList() {
           { transform: [{ scale }], opacity }
         ]}
       >
+        <Pressable 
+        style={styles.card}
+        onPress={() => {
+          console.log('Card clicked, navigating to:', `/details/${item.id}`);
+          router.push(`/details/${item.id}`);
+        }}
+      >
         <View style={styles.card}>
           {/* Card Image */}
           <Image 
@@ -114,6 +121,7 @@ export default function ActivitiesList() {
             </Pressable>
           </View>
         </View>
+          </Pressable>
       </Animated.View>
     );
   };
