@@ -22,7 +22,7 @@ This project was built as a tourism app to help visitors discover the hidden gem
 
 ---
 
-## 🎯 What We Learned
+##  What We Learned
 
 * Building mobile apps with React Native and Expo
 * File-based navigation with Expo Router
@@ -36,7 +36,7 @@ This project was built as a tourism app to help visitors discover the hidden gem
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * React Native
 * Expo
@@ -51,7 +51,7 @@ This project was built as a tourism app to help visitors discover the hidden gem
 
 ---
 
-## 📱 Screens
+##  Screens
 
 <div align="center">
   <img src="./screenshots/home.png" width="180" alt="Home" />
@@ -80,7 +80,7 @@ This project was built as a tourism app to help visitors discover the hidden gem
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ```bash
 # Clone the repository
@@ -98,7 +98,7 @@ Then press `a` for Android, `i` for iOS, or scan the QR code with Expo Go app.
 
 ---
 
-## 👥 Team
+##  Team
 
 * **Wissal Ouboujemaa** - Details Screen, Gallery Screen, Animations
 * **Mohamed Oolahiane** - Home Screen, City Details, Attractions List
