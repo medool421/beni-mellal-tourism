@@ -100,7 +100,7 @@ Then press `a` for Android, `i` for iOS, or scan the QR code with Expo Go app.
 
 ##  Team
 
-* **Wissal Ouboujemaa** - Details Screen, Gallery Screen, Animations
+* **Wissal Ouboujemaa** - Details Screen, Map,  Gallery Screen, Animations
 * **Mohamed Oolahiane** - Home Screen, City Details, Attractions List
 
 ---
